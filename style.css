@@ -13,10 +13,10 @@ body {
 .grid-container {
     margin-top: 300px;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr; 
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr; 
+    grid-template-columns: 80px 80px 80px 80px ; 
+    grid-template-rows: 65px 65px 65px 65px 65px 65px ; 
     background-color: #2196F3;
-    width: 12.5%;
+    width: 320px;
     padding: 5px;
     background-color: black;
     color: white;
@@ -24,7 +24,7 @@ body {
 
 .grid-item {
     padding: 25px;
-    border: 1px solid black;
+    outline: 1px solid black;
     text-align: center;
     background-color: #4D4D4D;
 }
@@ -52,7 +52,7 @@ body {
     font-family: digital;
 }
 
-#AC {
+#clear {
     grid-column: 1 / 3;
     background-color: #AC3939;
 }
@@ -70,7 +70,7 @@ body {
     grid-column: 1 / 3;
 }
 
-#divide, #multiply, #minus, #plus {
+#divide, #multiply, #subtract, #add {
     background-color: #666666;
 }
 
