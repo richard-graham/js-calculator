@@ -82,6 +82,27 @@ keyVal();
 */
 
 document.querySelectorAll('.grid-item').forEach(function(el){el.addEventListener('click', function() {
-    console.log(this.id);
+    inputDigit(this.value);
+    updateDisplay();
 });
 })
+
+const calculator = {
+    displayValue: '0',
+    firstVal: null,
+    secondVal: false,
+    operator: null,
+  };
+
+  function inputDigit(digit) {
+    const { displayValue } = calculator;
+    // Overwrite `displayValue` if the current value is '0' otherwise append to it
+    calculator.displayValue = displayValue === '0' ? digit : displayValue + digit;
+  }
+
+function updateDisplay() {
+    const display = document.querySelector('.calc-scn');
+    display.value = calculator.displayValue;
+  }
+  
+  updateDisplay();

@@ -15,6 +15,19 @@ body {
     justify-content: center;
 }
 
+.calc-scn {
+    width: 90%;
+    height: 90%;
+    font-size: 5rem;
+    height: 80px;
+    border: none;
+    background-color: #252525;
+    color: #fff;
+    text-align: right;
+    padding-right: 20px;
+    padding-left: 10px;
+  }
+
 .grid-container {
     margin-top: 300px;
     display: grid;
@@ -34,13 +47,17 @@ body {
     background-color: #4D4D4D;
 }
 
+.opr {
+    color: #2196F3
+}
+
 #display {
     grid-column: 1 / 5;
     grid-row: 1 / 2;    
     display: grid;
     grid-template-rows: 70% 30%;
     text-align: end;
-    padding: 7px;
+    padding: 5px;
     background-color: #000;
 }
 
