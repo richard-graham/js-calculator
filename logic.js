@@ -15,7 +15,7 @@ Should we have a global variable that all functions can access?
 number / 0 should equals error
 
 Necessary functions:
-Data validation - no double zeros to begin with, if double operators are entered the last on entered should be the one used, only one decimal point per number, an
+Data validation - no double zeros to begin with, if double operators are entered the last one entered should be the one used, only one decimal point per number, an
 operator can't be the first thing entered (i.e a number should be), pressing an operator immediately following = should start a new calculation that operates on the 
 result of the previous evaluation.
 
@@ -129,7 +129,7 @@ function updateDisplay() {
 
 //updates the disabled form that is the display, displayValue keeps at as 0
 function updateDisplay() {
-    const display = document.querySelector('.calc-scn'); //looks for class calc-scn
+    const display = document.querySelector('.calc-scn'); //looks for class calc-scn(the disabled form)
     display.value = calculator.displayValue;
     }
     
@@ -155,7 +155,8 @@ if (target.classList.contains('decimal')) {
 }
 
 if (target.classList.contains('all-clear')) {
-    console.log('clear', target.value);
+    resetCalc();
+        updateDisplay();
     return;
 }
 
@@ -213,6 +214,19 @@ const equals = {
     '+': (firstOperand, secondOperand) => firstOperand + secondOperand,
   
     '-': (firstOperand, secondOperand) => firstOperand - secondOperand,
+
+    '√': (firstOperand, secondOperand) => Math.sqrt(firstOperand),
+
+//  '%':
   
     '=': (firstOperand, secondOperand) => secondOperand
   };
+
+//resets calculator obj to defaults  
+  function resetCalc() {
+    calculator.displayValue = '0';
+    calculator.firstOperand = null;
+    calculator.waitingForSecondOperand = false;
+    calculator.operator = null;
+    console.log(calculator);
+  }
