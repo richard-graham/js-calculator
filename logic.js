@@ -83,35 +83,87 @@ keyVal();
 
 
 calc = {
-    equation: null,
+    equation: '',
     displayValue: '0',
     firstNumber: null,
+    secondNumber: null,
+    firstNumberParsed: null,
+    secondNumberParsed: null,
     waitForSecond: false,
     operator: null,
+    currentNumber: '',
 }  
 
-buttons = {
-    numbers: document.getElementsByClassName('number'),
-    equals: document.getElementById('equals'),
-    
+function inputNumber(digit) {
+    calc.currentNumber += digit; 
+    calc.equation += digit;
+    console.log(calc.currentNumber);
 }
 
-operatorFunctions = {
-    equals: function() {    },
-}
-
-function numberAssign(digit) {
-    if (calc.digitWait === true) {
-        calc.
+function inputOperator (operator) {
+    let output = 0;
+    if (calc.operator === null) {
+        calc.firstNumber = calc.currentNumber;
+        calc.operator = operator;
+        calc.currentNumber = '';
+    } else {
+        calc.secondNumber = calc.currentNumber
+        output = doMathStuff(calc.firstNumber, calc.secondNumber, calc.operator)
+        calc.firstNumber = output.toString();
+        calc.operator = operator;
+        calc.currentNumber = '';
     }
+    calc.equation += (` ${operator} `);
+
+    /*console.log('firstNumber', calc.firstNumber)
+    console.log('secondNumber', calc.secondNumber)*/
+    console.log('equation', calc.equation)
 }
 
+function inputEquals(value) {
+    var output = 0;
+    calc.secondNumber = calc.currentNumber;
+    output = doMathStuff(calc.firstNumber, calc.secondNumber, calc.operator)
+    calc.displayValue = output;
+    calc.equation += (` ${value} ${output.toString()}`)
 
+    console.log('output', output.toString());
+    console.log('value', value);
+    console.log('firstNumber', calc.firstNumber)
+    console.log('secondNumber', calc.secondNumber)
+    console.log(calc.displayValue);
+    console.log('equation', calc.equation);
+}
 
+function turnToNumber(str) {
+    return parseFloat(str);
+}
+
+function doMathStuff(firstNumberString, secondNumberString, operator) {
+    let returnValue = 0;
+    let firstVar = turnToNumber(firstNumberString);
+    let secondVar = turnToNumber(secondNumberString);
+
+    if (operator === '+') {
+        returnValue = firstVar + secondVar;
+    } else if (operator === '-') {
+        returnValue = firstVar - secondVar;
+    } else if (operator === '*') {
+        returnValue = firstVar * secondVar;
+    } else if (operator === '/') {
+        returnValue = firstVar / secondVar;
+    }
+    return returnValue;
+} 
 
 document.querySelectorAll('.number').forEach(function(el){el.addEventListener('click', function() {
-    calc.currentNumber = this.value; console.log(this.value);
+    inputNumber(this.value);
 })})
-equals.addEventListener('click', operatorFunctions.equals);
 
-console.log(calc.currentNumber);
+document.querySelectorAll('.operator').forEach(function(el){el.addEventListener('click', function() {
+    inputOperator(this.value);
+})})
+
+document.getElementById('equals').addEventListener('click', function() {
+    inputEquals(this.value);
+})
