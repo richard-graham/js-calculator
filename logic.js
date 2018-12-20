@@ -82,7 +82,7 @@ keyVal();
 */
 
 /* document.querySelectorAll('.grid-item').forEach(function(el){el.addEventListener('click', function() {
-    inputDigit(this.value);
+    entDig(this.value);
     updateDisplay();
 });
 })
@@ -94,7 +94,7 @@ const calculator = {
     operator: null,
   };
 
-function inputDigit(digit) {
+function entDig(digit) {
     const { displayValue, secondVal } = calculator;
   
     if (secondVal === true) {
@@ -119,15 +119,51 @@ function updateDisplay() {
 
 
 
-
+// object that handles input data
   const calculator = {
     displayValue: '0',
     firstOperand: null,
     waitingForSecondOperand: false,
     operator: null,
   };
-  
-  function inputDigit(digit) {
+
+//updates the disabled form that is the display, displayValue keeps at as 0
+function updateDisplay() {
+    const display = document.querySelector('.calc-scn'); //looks for class calc-scn
+    display.value = calculator.displayValue;
+    }
+    
+    updateDisplay();
+    
+const keys = document.querySelector('.grid-container'); //looks for grid-container and its children
+keys.addEventListener('click', (event) => {
+const { target } = event;
+if (!target.matches('button')) {
+    return;
+}
+
+if (target.classList.contains('operator')) {
+    handleOperator(target.value);
+        updateDisplay();
+    return;
+}
+
+if (target.classList.contains('decimal')) {
+    inputDecimal(target.value);
+        updateDisplay();
+    return;
+}
+
+if (target.classList.contains('all-clear')) {
+    console.log('clear', target.value);
+    return;
+}
+
+entDig(target.value);
+updateDisplay();
+});
+
+  function entDig(digit) {
     const { displayValue, waitingForSecondOperand } = calculator;
   
     if (waitingForSecondOperand === true) {
@@ -148,50 +184,35 @@ function updateDisplay() {
     }
   }
   
-  function handleOperator(nextOperator) {
-    const { firstOperand, displayValue, operator } = calculator
-    const inputValue = parseFloat(displayValue);
-  
-    if (firstOperand === null) {
-      calculator.firstOperand = inputValue;
-    }
-  
-    calculator.waitingForSecondOperand = true;
-    calculator.operator = nextOperator;
-    console.log(calculator);
+//looks for opereator key press then stores first number in firstoperand and operator then waits for seocnd number
+function handleOperator(nextOperator) {
+  const { firstOperand, displayValue, operator } = calculator
+  const inputValue = parseFloat(displayValue);
+
+  if (firstOperand == null) {
+    calculator.firstOperand = inputValue;
+  } else if (operator) {
+    const result = equals [operator](firstOperand, inputValue); //calls function equals below
+
+    calculator.displayValue = String(result);
+    calculator.firstOperand = result;
   }
+
+  calculator.waitingForSecondOperand = true;
+  calculator.operator = nextOperator;
+  console.log(calculator);
+}
+
+//looks for operator passed through, works like if/else until it finds the correct opertator, then
+//performs function
+const equals = {
+    '/': (firstOperand, secondOperand) => firstOperand / secondOperand,
   
-  function updateDisplay() {
-    const display = document.querySelector('.calc-scn');
-    display.value = calculator.displayValue;
-  }
+    '*': (firstOperand, secondOperand) => firstOperand * secondOperand,
   
-  updateDisplay();
+    '+': (firstOperand, secondOperand) => firstOperand + secondOperand,
   
-  const keys = document.querySelector('.grid-container');
-  keys.addEventListener('click', (event) => {
-    const { target } = event;
-    if (!target.matches('button')) {
-      return;
-    }
+    '-': (firstOperand, secondOperand) => firstOperand - secondOperand,
   
-    if (target.classList.contains('operator')) {
-      handleOperator(target.value);
-          updateDisplay();
-      return;
-    }
-  
-    if (target.classList.contains('decimal')) {
-      inputDecimal(target.value);
-          updateDisplay();
-      return;
-    }
-  
-    if (target.classList.contains('all-clear')) {
-      console.log('clear', target.value);
-      return;
-    }
-  
-    inputDigit(target.value);
-    updateDisplay();
-  });
+    '=': (firstOperand, secondOperand) => secondOperand
+  };
