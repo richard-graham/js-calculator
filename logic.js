@@ -81,7 +81,37 @@ keyVal();
     
 */
 
-document.querySelectorAll('.grid-item').forEach(function(el){el.addEventListener('click', function() {
-    console.log(this.id);
-});
-})
+
+calc = {
+    equation: null,
+    displayValue: '0',
+    firstNumber: null,
+    waitForSecond: false,
+    operator: null,
+}  
+
+buttons = {
+    numbers: document.getElementsByClassName('number'),
+    equals: document.getElementById('equals'),
+    
+}
+
+operatorFunctions = {
+    equals: function() {    },
+}
+
+function numberAssign(digit) {
+    if (calc.digitWait === true) {
+        calc.
+    }
+}
+
+
+
+
+document.querySelectorAll('.number').forEach(function(el){el.addEventListener('click', function() {
+    calc.currentNumber = this.value; console.log(this.value);
+})})
+equals.addEventListener('click', operatorFunctions.equals);
+
+console.log(calc.currentNumber);
