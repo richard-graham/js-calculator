@@ -10,26 +10,28 @@
 <body>
     <div class="grid-container">
         <div class="grid-item" id="display">
-            <div class="display-item" id="equation"><input type="text" class="calc-scn" value="" disabled /></div>
-          <!--  <div class="display-item" id="output">10</div> -->
+            <div id="equation"><input type="text" class="calc-scn" value="" disabled /></div>
+            <div id="output"><class="calc-scn" input tpye="text" value="" disabled></div>
         </div>
-        <button class="grid-item" type="button" value="all-clear">AC</button>
-        <button class="grid-item" type="button" value="/" >/</button>
-        <button class="grid-item" type="button" value="*">x</button>
+        <button class="grid-item all-clear" type="button" value="all-clear" id="clear">AC</button>
+        <button class="grid-item" type="button" value="&#8730;">√</button>
+        <button class="grid-item" type="button" value="%">%</button>
         <button class="grid-item" type="button" value="7">7</button>
         <button class="grid-item" type="button" value="8">8</button>
         <button class="grid-item" type="button" value="9">9</button>
-        <button class="grid-item" type="button" id="subtract" value="-">-</button>
+        <button class="grid-item operator" type="button" value="/" id="divide" >/</button>
         <button class="grid-item" type="button" value="4">4</button>
         <button class="grid-item" type="button" value="5">5</button>
         <button class="grid-item" type="button" value="6">6</button>
-        <button class="grid-item" type="button" value="+">+</button>
+        <button class="grid-item operator" type="button" value="*" id="multiply">x</button>
         <button class="grid-item" type="button" value="1">1</button>
         <button class="grid-item" type="button" value="2">2</button>
         <button class="grid-item" type="button" value="3">3</button>
-        <button class="grid-item" type="button" value="=">=</button>
-        <button class="grid-item" type="button" value="0">0</button>
-        <button class="grid-item" type="button" value=".">.</button>
+        <button class="grid-item  operator" type="button" value="+" id="add">+</button>
+        <button class="grid-item" type="button" value="0" id="zero">0</button>
+        <button class="grid-item decimal" type="button" value=".">.</button>
+        <button class="grid-item  operator" type="button" id="subtract" value="-">-</button>
+        <button class="grid-item" type="button" value="=" id="equals">=</button>
     </div>
     <script src="logic.js"></script>
 </body>
