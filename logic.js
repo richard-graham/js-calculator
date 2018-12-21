@@ -87,12 +87,18 @@ calc = {
     displayValue: '0',
     firstNumber: null,
     secondNumber: null,
-    waitForSecond: false,
     operator: null,
     currentNumber: '',
+    isEqualled: false,
 }  
 
 function inputNumber(digit) {
+    if (calc.isEqualled === true) {
+        calc.equation = '';
+        calc.displayValue = '0';
+        calc.currentNumber = '';
+        calc.isEqualled = false;
+    }
     if (!isNumber(calc.currentNumber)) {
         calc.currentNumber = digit;
     } else {
@@ -103,10 +109,21 @@ function inputNumber(digit) {
 
 function inputOperator (operator) {
     let output = 0;
+
     if (calc.operator === null) {
         calc.firstNumber = calc.currentNumber;
         calc.operator = operator;
         calc.currentNumber = operator;
+    } 
+    else if (calc.isEqualled === true) {
+        calc.secondNumber = calc.currentNumber
+        output = doMathStuff(calc.firstNumber, calc.secondNumber, calc.operator)
+        calc.firstNumber = output.toString();
+        calc.operator = operator;
+        calc.currentNumber = operator;
+        calc.equation = calc.firstNumber;
+        calc.isEqualled = false;
+        console.log(calc)
     } else {
         calc.secondNumber = calc.currentNumber
         output = doMathStuff(calc.firstNumber, calc.secondNumber, calc.operator)
@@ -115,10 +132,10 @@ function inputOperator (operator) {
         calc.currentNumber = operator;
     }
     calc.equation += (` ${operator} `);
+    
 
     /*console.log('firstNumber', calc.firstNumber)
     console.log('secondNumber', calc.secondNumber)*/
-    console.log('equation', calc.equation)
 }
 
 function inputEquals(value) {
@@ -128,6 +145,8 @@ function inputEquals(value) {
     calc.displayValue = output;
     calc.equation += (` ${value} ${output.toString()}`)
     document.getElementById('outputDisplay').innerHTML = calc.displayValue;
+    calc.isEqualled = true,
+    console.log('calc', calc);
 
     console.log('output', output.toString());
     console.log('value', value);
