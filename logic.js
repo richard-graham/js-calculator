@@ -1,3 +1,5 @@
+https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js
+
 document.addEventListener('DOMContentLoaded', function() {
     calcInit();
 }, false);
@@ -19,12 +21,13 @@ function calcInit() {
 function inputNumber(digit) {
     if (calc.isEqualled === true) {
         calcInit()
-        console.log(calc)
+    }
+    if (digit === '.' && calc.currentNumber.includes('.')) {
+        return;
     }
     if (digit === '.' && !isNumber(calc.currentNumber)) {
         calc.currentNumber = '0.'
         digit = '0.'
-        console.log(digit)
     } else if (calc.currentNumber === '0.') {
         calc.currentNumber += digit
     } else if (calc.currentNumber === calc.operator) {
@@ -33,11 +36,12 @@ function inputNumber(digit) {
     calc.currentNumber += digit; 
     }
     calc.equation += digit;
-    console.log(calc)
 }
 
 function inputOperator (operator) {
-    let output = 0;
+    let output = 0; 
+    //replaces previous operator in equation string
+    //have look at refactoring common statements
     if (!isNumber(calc.currentNumber)) {
         calc.operator = operator;
         calc.equation = calc.equation.substring(0, calc.equation.length - 3);
@@ -78,6 +82,7 @@ function inputEquals(value) {
     calc.isEqualled = true;
 }
 
+//reusable functions that the main functions rely on
 function turnStringToNumber(str) {
     return parseFloat(str);
 }
@@ -86,7 +91,7 @@ function isNumber(string) {
     return parseFloat(string).toString() === string.toString();
 }
 
-function doMathStuff(firstNumberString, secondNumberString, operator) {
+function doMathStuff(firstNumberString, secondNumberString, operator) { //refactor to switch statement
     let returnValue = 0;
     let firstVar = turnStringToNumber(firstNumberString);
     let secondVar = turnStringToNumber(secondNumberString);
@@ -104,7 +109,6 @@ function doMathStuff(firstNumberString, secondNumberString, operator) {
     return parseFloat(returnValue);
 } 
 
-
 //functions called solely by event handlers
 function updateEquation() {
     document.getElementById('equation-display').innerHTML = calc.equation;
@@ -118,7 +122,7 @@ function updateOutputOperator() {
     document.getElementById('outputDisplay').innerHTML = calc.operator;
 }
 
-
+//event handlers
 document.querySelectorAll('.number').forEach(function(el){el.addEventListener('click', function() {
     inputNumber(this.value)
     updateOutputDisplay(calc.currentNumbers)
@@ -131,8 +135,9 @@ document.querySelectorAll('.operator').forEach(function(el){el.addEventListener(
 document.getElementById('equals').addEventListener('click', function() {
     inputEquals(this.value);
 })
+
 document.querySelectorAll('button').forEach(function(el){el.addEventListener('click', function() {
-    updateEquation();
+    updateEquation(this.value);
 })})
 
 document.getElementById('clear').addEventListener('click', function() {
