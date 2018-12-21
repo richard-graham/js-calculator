@@ -126,6 +126,7 @@ function inputEquals(value) {
     output = doMathStuff(calc.firstNumber, calc.secondNumber, calc.operator)
     calc.displayValue = output;
     calc.equation += (` ${value} ${output.toString()}`)
+    document.getElementById("outputDisplay").innerHTML = calc.displayValue;
 
     console.log('output', output.toString());
     console.log('value', value);
@@ -161,15 +162,24 @@ function updateEquation() {
     document.getElementById("equation-display").innerHTML = calc.equation;
 }
 
+function updateOutputDisplay() {
+    document.getElementById("outputDisplay").innerHTML = calc.currentNumber;
+}
+
+function updateOutputOperator() {
+    document.getElementById("outputDisplay").innerHTML = calc.operator;
+}
 
 
 document.querySelectorAll('.number').forEach(function(el){el.addEventListener('click', function() {
     inputNumber(this.value)
+    updateOutputDisplay(this.value)
     ;
 })})
 
 document.querySelectorAll('.operator').forEach(function(el){el.addEventListener('click', function() {
     inputOperator(this.value);
+    updateOutputOperator()
 })})
 
 document.getElementById('equals').addEventListener('click', function() {
