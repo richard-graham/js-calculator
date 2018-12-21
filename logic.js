@@ -12,77 +12,74 @@ function calcInit() {
     calc.firstNumber = null;
     calc.secondNumber = null;
     calc.operator = null;
-    calc.currentNumber = '';
+    calc.currentVal = '';
     calc.isEqualled = false;
 
     return calc;
 }
 
 function inputNumber(digit) {
-    if (calc.isEqualled === true) {
+    if (calc.isEqualled) { // if the last button pressed was equals
         calcInit()
     }
-    if (digit === '.' && calc.currentNumber.includes('.')) {
-        return;
+    if (digit === '.' && calc.currentVal.includes('.')) { //if there is already a '.' in the currentVal
+        return; //exit
     }
-    if (digit === '.' && !isNumber(calc.currentNumber)) {
-        calc.currentNumber = '0.'
+    if (digit === '.' && !isNumber(calc.currentVal)) { //if there is an operator in currentVal and the next input is '.' make it '0.'
+        calc.currentVal = '0.'
         digit = '0.'
-    } else if (calc.currentNumber === '0.') {
-        calc.currentNumber += digit
-    } else if (calc.currentNumber === calc.operator) {
-        calc.currentNumber = digit
-     } else {
-    calc.currentNumber += digit; 
+    } else if (calc.currentVal === '0.') {//'0.' is not a number so we need to specifically say if the currentVal is '0.' then add new digit to the end of the currentVal
+        calc.currentVal += digit
+    } else if (calc.currentVal === calc.operator) {//if last digit was an operator replace it rather than add digit to the end of it
+        calc.currentVal = digit
+     } else {// otherwise just pop the digit on the end
+    calc.currentVal += digit; 
     }
     calc.equation += digit;
 }
 
 function inputOperator (operator) {
     let output = 0; 
-    //replaces previous operator in equation string
-    //have look at refactoring common statements
-    if (!isNumber(calc.currentNumber)) {
-        calc.operator = operator;
-        calc.equation = calc.equation.substring(0, calc.equation.length - 3);
-        calc.equation += (` ${operator} `);
-        calc.currentNumber = operator;
+    if (!isNumber(calc.currentVal)) { //if currentVal is not a number (i.e the the last value entered was an operator)
+        replaceOperatorAndVal(operator);
+        calc.equation = calc.equation.substring(0, calc.equation.length - 3); //removes last operator from the equation string
+        calc.equation += (` ${operator} `); //adds new operator on the end
         return;
     }
-    if (calc.operator === null) {
-        calc.firstNumber = calc.currentNumber;
-        calc.operator = operator;
-        calc.currentNumber = operator;
+    if (calc.operator === null) { //this runs the first time an operator is entered or after AC is hit
+        calc.firstNumber = calc.currentVal; 
     } 
-    else if (calc.isEqualled === true) {
-        calc.secondNumber = calc.currentNumber
-        output = doMathStuff(calc.firstNumber, calc.secondNumber, calc.operator)
+    else if (calc.isEqualled === true) { //if the last button pressed was equals
+        calc.secondNumber = calc.currentVal 
+        output = doMathStuff(calc.firstNumber, calc.secondNumber, calc.operator) 
         calc.firstNumber = output.toString();
-        calc.operator = operator;
-        calc.currentNumber = operator;
         calc.equation = calc.firstNumber;
         calc.isEqualled = false;
     } else {
-        calc.secondNumber = calc.currentNumber
+        calc.secondNumber = calc.currentVal
         output = doMathStuff(calc.firstNumber, calc.secondNumber, calc.operator)
         calc.firstNumber = output.toString();
-        calc.operator = operator;
-        calc.currentNumber = operator;
     }
+    replaceOperatorAndVal(operator);
     calc.equation += (` ${operator} `);
 }
 
-function inputEquals(value) {
+function inputEquals(value) { //when equals is pressed do this stuff
     var output = 0;
-    calc.secondNumber = calc.currentNumber;
+    calc.secondNumber = calc.currentVal;
     output = doMathStuff(calc.firstNumber, calc.secondNumber, calc.operator)
     calc.displayValue = output;
     calc.equation += (` ${value} ${output.toString()}`)
     document.getElementById('outputDisplay').innerHTML = calc.displayValue;
-    calc.isEqualled = true;
+    calc.isEqualled = true; //this is how other functions know equals was the last thing pressed
 }
 
 //reusable functions that the main functions rely on
+function replaceOperatorAndVal (input) {
+    calc.currentVal = input;
+    calc.operator = input;
+}
+
 function turnStringToNumber(str) {
     return parseFloat(str);
 }
@@ -91,19 +88,26 @@ function isNumber(string) {
     return parseFloat(string).toString() === string.toString();
 }
 
-function doMathStuff(firstNumberString, secondNumberString, operator) { //refactor to switch statement
+function doMathStuff(firstNumberString, secondNumberString, operator) { 
     let returnValue = 0;
     let firstVar = turnStringToNumber(firstNumberString);
     let secondVar = turnStringToNumber(secondNumberString);
 
-    if (operator === '+') {
-        returnValue = firstVar + secondVar;
-    } else if (operator === '-') {
-        returnValue = firstVar - secondVar;
-    } else if (operator === '*') {
-        returnValue = firstVar * secondVar;
-    } else if (operator === '/') {
-        returnValue = firstVar / secondVar;
+    switch (operator) {
+        case '+':
+            returnValue = firstVar + secondVar  ;
+            break;
+        case '-':
+            returnValue = firstVar - secondVar  ;
+            break;
+        case '*':
+            returnValue = firstVar * secondVar  ;
+            break;
+        case '/':
+            returnValue = firstVar / secondVar  ;
+            break;
+        default:
+            returnValue = 'doMathStuff() expected an operator'
     }
     returnValue = returnValue.toFixed(4);
     return parseFloat(returnValue);
@@ -115,17 +119,17 @@ function updateEquation() {
 }
 
 function updateOutputDisplay() {
-    document.getElementById('outputDisplay').innerHTML = calc.currentNumber;
+    document.getElementById('outputDisplay').innerHTML = calc.currentVal;
 }
 
 function updateOutputOperator() {
     document.getElementById('outputDisplay').innerHTML = calc.operator;
 }
 
-//event handlers
+//event listeners and handlers
 document.querySelectorAll('.number').forEach(function(el){el.addEventListener('click', function() {
     inputNumber(this.value)
-    updateOutputDisplay(calc.currentNumbers)
+    updateOutputDisplay()
     ;
 })})
 document.querySelectorAll('.operator').forEach(function(el){el.addEventListener('click', function() {
@@ -138,6 +142,8 @@ document.getElementById('equals').addEventListener('click', function() {
 
 document.querySelectorAll('button').forEach(function(el){el.addEventListener('click', function() {
     updateEquation(this.value);
+    console.log('currentVal:', calc.currentVal)
+    console.log('equation:', calc.equation)
 })})
 
 document.getElementById('clear').addEventListener('click', function() {
