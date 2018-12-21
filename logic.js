@@ -153,11 +153,19 @@ function doMathStuff(firstNumberString, secondNumberString, operator) {
     } else if (operator === '/') {
         returnValue = firstVar / secondVar;
     }
-    return returnValue;
+    returnValue = returnValue.toFixed(4);
+    return parseFloat(returnValue);
 } 
 
+function updateEquation() {
+    document.getElementById("equation-display").innerHTML = calc.equation;
+}
+
+
+
 document.querySelectorAll('.number').forEach(function(el){el.addEventListener('click', function() {
-    inputNumber(this.value);
+    inputNumber(this.value)
+    ;
 })})
 
 document.querySelectorAll('.operator').forEach(function(el){el.addEventListener('click', function() {
@@ -167,3 +175,10 @@ document.querySelectorAll('.operator').forEach(function(el){el.addEventListener(
 document.getElementById('equals').addEventListener('click', function() {
     inputEquals(this.value);
 })
+
+document.querySelectorAll('button').forEach(function(el){el.addEventListener('click', function() {
+    updateEquation();
+})})
+
+
+
