@@ -80,31 +80,54 @@ keyVal();
 //keyStroke = (value) => {
     
 */
+document.addEventListener('DOMContentLoaded', function() {
+    calcInit();
+}, false);
 
-
-calc = {
+/*calc = {
     equation: '',
-    displayValue: '0',
+    displayValue: '',
     firstNumber: null,
     secondNumber: null,
     operator: null,
     currentNumber: '',
     isEqualled: false,
-}  
+}  */
+var calc = {};
+
+function calcInit() {
+    calc.equation = '';
+    calc.displayValue = '';
+    calc.firstNumber = null;
+    calc.secondNumber = null;
+    calc.operator = null;
+    calc.currentNumber = '';
+    calc.isEqualled = false;
+
+    return calc;
+}
+
+console.log(calc)
 
 function inputNumber(digit) {
+    
     if (calc.isEqualled === true) {
-        calc.equation = '';
-        calc.displayValue = '0';
-        calc.currentNumber = '';
-        calc.isEqualled = false;
+        calcInit()
+        console.log(calc)
     }
-    if (!isNumber(calc.currentNumber)) {
-        calc.currentNumber = digit;
-    } else {
+    if (digit === '.' && !isNumber(calc.currentNumber)) {
+        calc.currentNumber = '0.'
+        digit = '0.'
+        console.log(digit)
+    } else if (calc.currentNumber === '0.') {
+        calc.currentNumber += digit
+    } else if (calc.currentNumber === calc.operator) {
+        calc.currentNumber = digit
+     } else {
     calc.currentNumber += digit; 
     }
     calc.equation += digit;
+    console.log(calc)
 }
 
 function inputOperator (operator) {
@@ -182,6 +205,8 @@ function doMathStuff(firstNumberString, secondNumberString, operator) {
     return parseFloat(returnValue);
 } 
 
+
+//functions called solely by event handlers
 function updateEquation() {
     document.getElementById('equation-display').innerHTML = calc.equation;
 }
@@ -197,23 +222,25 @@ function updateOutputOperator() {
 
 document.querySelectorAll('.number').forEach(function(el){el.addEventListener('click', function() {
     inputNumber(this.value)
-    updateOutputDisplay(this.value)
+    updateOutputDisplay(calc.currentNumbers)
     ;
 })})
-
 document.querySelectorAll('.operator').forEach(function(el){el.addEventListener('click', function() {
     inputOperator(this.value);
     updateOutputOperator()
 })})
-
 document.getElementById('equals').addEventListener('click', function() {
     inputEquals(this.value);
 })
-
 document.querySelectorAll('button').forEach(function(el){el.addEventListener('click', function() {
     updateEquation();
     console.log('current number', calc.currentNumber)
 })})
 
-
+document.getElementById('clear').addEventListener('click', function() {
+    calcInit();
+    updateEquation();
+    updateOutputDisplay();
+    console.log(calc)
+})
 
