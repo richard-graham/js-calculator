@@ -6,6 +6,8 @@
 
 button {
     border-color: gray;
+    color: white;
+    font-size: 11px;
 }
 
 
@@ -44,14 +46,10 @@ body {
     background-color: #000;
 }
 
-#equation {
-    font-size: 20px;
+#outputDisplay {
+    font-size: 25px;
     font-family: digital;
-}
-
-#output {
-    font-size: 20px;
-    font-family: digital;
+    margin-top: 4px;
 }
 
 #outputDisplay {
@@ -79,6 +77,11 @@ body {
 #divide, #multiply, #subtract, #add {
     background-color: #666666;
 }
-
+ #equation-display {
+    font-size: 20px;
+    font-family: digital;
+    margin-top: 4px;
+    color: #FEA429;
+ }
 
 
