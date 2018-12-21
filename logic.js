@@ -36,7 +36,7 @@ function inputNumber(digit) {
     console.log(calc)
 }
 
-function inputOperator (operator) {
+function inputOperator (passedOperator) {
     let output = 0;
     if (!isNumber(calc.currentNumber)) {
         calc.operator = operator;
@@ -60,10 +60,11 @@ function inputOperator (operator) {
         calc.isEqualled = false;
     } else {
         calc.secondNumber = calc.currentNumber
+        console.log(calc.firstNumber, calc.secondNumber, calc.operator)
         output = doMathStuff(calc.firstNumber, calc.secondNumber, calc.operator)
         calc.firstNumber = output.toString();
-        calc.operator = operator;
-        calc.currentNumber = operator;
+        calc.operator = passedOperator;
+        calc.currentNumber = passedOperator;
     }
     calc.equation += (` ${operator} `);
 }
@@ -72,6 +73,7 @@ function inputEquals(value) {
     var output = 0;
     calc.secondNumber = calc.currentNumber;
     output = doMathStuff(calc.firstNumber, calc.secondNumber, calc.operator)
+    console.log('output =', output);
     calc.displayValue = output;
     calc.equation += (` ${value} ${output.toString()}`)
     document.getElementById('outputDisplay').innerHTML = calc.displayValue;
@@ -86,22 +88,28 @@ function isNumber(string) {
     return parseFloat(string).toString() === string.toString();
 }
 
-function doMathStuff(firstNumberString, secondNumberString, operator) {
+function doMathStuff(firstNumberString, secondNumberString, originalOperator) {
     let returnValue = 0;
     let firstVar = turnStringToNumber(firstNumberString);
     let secondVar = turnStringToNumber(secondNumberString);
+    console.log('firstVar', firstVar)
+    console.log('secondVar', secondVar)
+    console.log('operator', originalOperator)
 
-    if (operator === '+') {
+    if (originalOperator === '+') {
         returnValue = firstVar + secondVar;
-    } else if (operator === '-') {
+        console.log('pinged')
+    } if (originalOperator === '-') {
         returnValue = firstVar - secondVar;
-    } else if (operator === '*') {
+    } if (originalOperator === '*') {
         returnValue = firstVar * secondVar;
-    } else if (operator === '/') {
+    } if (originalOperator === '/') {
         returnValue = firstVar / secondVar;
     }
-    returnValue = returnValue.toFixed(4);
-    return parseFloat(returnValue);
+    //returnValue = returnValue.toFixed(4);
+    //return parseFloat(returnValue);
+    console.log(returnValue)
+    return returnValue
 } 
 
 
@@ -126,7 +134,7 @@ document.querySelectorAll('.number').forEach(function(el){el.addEventListener('c
 })})
 document.querySelectorAll('.operator').forEach(function(el){el.addEventListener('click', function() {
     inputOperator(this.value);
-    updateOutputOperator()
+    //updateOutputOperator()
 })})
 document.getElementById('equals').addEventListener('click', function() {
     inputEquals(this.value);
