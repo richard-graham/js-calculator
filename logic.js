@@ -137,7 +137,7 @@ function inputEquals(value) {
     console.log('equation', calc.equation);
 }
 
-function turnToNumber(str) {
+function turnStringToNumber(str) {
     return parseFloat(str);
 }
 
@@ -147,8 +147,8 @@ function isNumber(string) {
 
 function doMathStuff(firstNumberString, secondNumberString, operator) {
     let returnValue = 0;
-    let firstVar = turnToNumber(firstNumberString);
-    let secondVar = turnToNumber(secondNumberString);
+    let firstVar = turnStringToNumber(firstNumberString);
+    let secondVar = turnStringToNumber(secondNumberString);
 
     if (operator === '+') {
         returnValue = firstVar + secondVar;
