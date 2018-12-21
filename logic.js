@@ -89,35 +89,37 @@ calc = {
     secondNumber: null,
     waitForSecond: false,
     operator: null,
-    currentNumber: '',
+    currentNumber: '0',
 }  
 
 function inputNumber(digit) {
     if (!isNumber(calc.currentNumber)) {
         calc.currentNumber = digit;
+        
     } else {
     calc.currentNumber += digit; 
     }
     calc.equation += digit;
 }
 
-function inputOperator (operator) {
+function inputOperator (passedOperator) {
     let output = 0;
     if (calc.operator === null) {
         calc.firstNumber = calc.currentNumber;
-        calc.operator = operator;
-        calc.currentNumber = operator;
+        calc.operator = passedOperator;
+        calc.currentNumber = passedOperator;
     } else {
         calc.secondNumber = calc.currentNumber
+        console.log(calc.firstNumber, calc.secondNumber, calc.operator)
         output = doMathStuff(calc.firstNumber, calc.secondNumber, calc.operator)
         calc.firstNumber = output.toString();
-        calc.operator = operator;
-        calc.currentNumber = operator;
+        calc.operator = passedOperator;
+        calc.currentNumber = passedOperator;
     }
-    calc.equation += (` ${operator} `);
+    calc.equation += (` ${passedOperator} `);
 
-    /*console.log('firstNumber', calc.firstNumber)
-    console.log('secondNumber', calc.secondNumber)*/
+    console.log('firstNumber', calc.firstNumber)
+    console.log('secondNumber', calc.secondNumber)
     console.log('equation', calc.equation)
 }
 
@@ -125,11 +127,12 @@ function inputEquals(value) {
     var output = 0;
     calc.secondNumber = calc.currentNumber;
     output = doMathStuff(calc.firstNumber, calc.secondNumber, calc.operator)
+    console.log('output =', output);
     calc.displayValue = output;
     calc.equation += (` ${value} ${output.toString()}`)
     document.getElementById('outputDisplay').innerHTML = calc.displayValue;
 
-    console.log('output', output.toString());
+    
     console.log('value', value);
     console.log('firstNumber', calc.firstNumber)
     console.log('secondNumber', calc.secondNumber)
@@ -145,22 +148,28 @@ function isNumber(string) {
     return parseFloat(string).toString() === string.toString();
 }
 
-function doMathStuff(firstNumberString, secondNumberString, operator) {
+function doMathStuff(firstNumberString, secondNumberString, originalOperator) {
     let returnValue = 0;
     let firstVar = turnStringToNumber(firstNumberString);
     let secondVar = turnStringToNumber(secondNumberString);
+    console.log('firstVar', firstVar)
+    console.log('secondVar', secondVar)
+    console.log('operator', originalOperator)
 
-    if (operator === '+') {
+    if (originalOperator === '+') {
         returnValue = firstVar + secondVar;
-    } else if (operator === '-') {
+        console.log('pinged')
+    } if (originalOperator === '-') {
         returnValue = firstVar - secondVar;
-    } else if (operator === '*') {
+    } if (originalOperator === '*') {
         returnValue = firstVar * secondVar;
-    } else if (operator === '/') {
+    } if (originalOperator === '/') {
         returnValue = firstVar / secondVar;
     }
-    returnValue = returnValue.toFixed(4);
-    return parseFloat(returnValue);
+    //returnValue = returnValue.toFixed(4);
+    //return parseFloat(returnValue);
+    console.log(returnValue)
+    return returnValue
 } 
 
 function updateEquation() {
@@ -184,7 +193,7 @@ document.querySelectorAll('.number').forEach(function(el){el.addEventListener('c
 
 document.querySelectorAll('.operator').forEach(function(el){el.addEventListener('click', function() {
     inputOperator(this.value);
-    updateOutputOperator()
+    //updateOutputOperator()
 })})
 
 document.getElementById('equals').addEventListener('click', function() {
